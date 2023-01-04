@@ -9,4 +9,5 @@ query = {'key': config['api_key'], 'q': 'Lille'}
 response = requests.get("https://api.weatherapi.com/v1/current.json", params=query)
 
 json_response = response.json()
-print(json_response)
+print(json_response["current"]["temp_c"])
+
