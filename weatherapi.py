@@ -16,10 +16,10 @@ class Weatherapi:
         return response["forecast"]["forecastday"]
 
     def current_weather_option(self, param: str) -> int:
-        """
+        """current_weather_option() take the parameter of what you want to get such as "temp_c" or "humidity"
 
-        :param param: the value you want to get -> "temp_c", "humidity".... https://www.weatherapi.com/docs/#apis-realtime
-        :return:
+        :param param: the value you want to get -> "temp_c", "humidity" : https://www.weatherapi.com/docs/#apis-realtime
+        :return: an integer of the option you chose
         """
         current_weather = self.get_current_weather_from_api()
         current_param = current_weather[param]
@@ -29,7 +29,6 @@ class Weatherapi:
         current_weather = self.get_current_weather_from_api()
         current_condition = current_weather["condition"]["text"]
         return current_condition
-
 
     def forecast_for_a_day_option(self, arg: str, day: int = 1) -> dict:
         """forecast_day_option return the forecast for the given day
@@ -41,7 +40,6 @@ class Weatherapi:
         Example:
         forecast_day_option("avgtemp_c", 3) -> 7.7 in Celsius degree
         forecast_day_option("daily_will_it_snow", 1) -> 0 (it will not snow)
-
         """
         # Handle day
         if day < 1:
@@ -75,5 +73,15 @@ class Weatherapi:
         :return: the condition of the day
         """
         forecast_weather = self.get_forecast_weather_from_api(days=day)
+        return forecast_weather[day - 1]["day"]["condition"]["text"]
+
+    def forecast_for_an_hour_condition(self, day: int, hour: int) -> str:
+        """ same as forecast_for_a_day_condition() but for an hour of a day
+
+        :param day: day between 1 and 14
+        :param hour: between 0 and 24
+        :return: the forecast condition in string
+        """
+        forecast_weather = self.get_forecast_weather_from_api(days=day, hour=hour)
         return forecast_weather[day - 1]["day"]["condition"]["text"]
 
