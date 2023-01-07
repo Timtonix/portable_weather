@@ -53,7 +53,9 @@ def welcome_message():
 def display_weather_forecast():
     date = localtime()
     oled.fill(0)
-    oled.text(f"{date[2]} {get_month(date[1])}", 0, 0)
+    oled.text(f"{date[2]} {get_month(date[1])}", 30, 0)
+    oled.text(f"Min {weather.forecast_for_a_day_option('mintemp_c')} Max {weather.forecast_for_a_day_option('maxtemp_c')}", 0, 10)
     oled.show()
 
-welcome_message()
+
+display_weather_forecast()
