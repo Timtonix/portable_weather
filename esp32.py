@@ -62,18 +62,21 @@ def display_weather_forecast_day(day: int = 1):
 
 def display_weather_forecast_hour(day: int = 1, hour: int = 1):
     date = localtime()
-    following_hour = 24 + hour
+    following_hour = date[3] + hour
     if following_hour >= 24:
         following_hour = 0
         day += 1
     forecast = weather.get_forecast_weather_from_api(days=day, hour=following_hour)
     forecast = forecast[day - 1]["hour"][0]
+    print(forecast["humidity"])
+    print(forecast["will_it_rain"])
     oled.fill(0)
-    oled.text(f"{forecast['time']}", 2, 0)
+    oled.text(f"{forecast['time']}", 0, 0)
     oled.text(f"Temp {forecast['temp_c']} C", 0, 13)
     oled.text(f"Rain {forecast['chance_of_rain']}%", 0, 26)
     oled.text(f"Cloud {forecast['cloud']}%", 0, 39)
     oled.show()
 
 
-display_weather_forecast_hour(1, 12)
+display_weather_forecast_hour()
+
