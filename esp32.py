@@ -50,11 +50,13 @@ def welcome_message():
     oled.show()
 
 
-def display_weather_forecast():
+def display_weather_forecast(day: int = 1):
     date = localtime()
+    forecast = weather.get_forecast_weather_from_api()
     oled.fill(0)
     oled.text(f"{date[2]} {get_month(date[1])}", 30, 0)
-    oled.text(f"Min {weather.forecast_for_a_day_option('mintemp_c')} Max {weather.forecast_for_a_day_option('maxtemp_c')}", 0, 10)
+    oled.text(f"Min {forecast[day - 1]['day']['mintemp_c']} Max {forecast[day - 1]['day']['maxtemp_c']}", 0, 13)
+    oled.text(f"Pluie : {forecast[day - 1]['day']['daily_chance_of_rain']}%", 0, 26)
     oled.show()
 
 
