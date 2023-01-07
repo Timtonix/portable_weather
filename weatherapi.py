@@ -68,10 +68,11 @@ class Weatherapi:
         return forecast_weather[day - 1]["hour"][hour - 1][arg]
 
     def forecast_for_a_day_condition(self, day: int) -> str:
-        """
+        """forecast_for_a_day_condition() is a function which return the condition of a day
+        -> Partly Cloudy or Light Rain ....
 
         :param day:
-        :return:
+        :return: the condition of the day
         """
         forecast_weather = self.get_forecast_weather_from_api(days=day)
         return forecast_weather[day - 1]["day"]["condition"]["text"]
