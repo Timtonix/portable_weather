@@ -50,7 +50,7 @@ def welcome_message():
     oled.show()
 
 
-def display_weather_forecast(day: int = 1):
+def display_weather_forecast_day(day: int = 1):
     date = localtime()
     forecast = weather.get_forecast_weather_from_api()
     oled.fill(0)
@@ -60,4 +60,20 @@ def display_weather_forecast(day: int = 1):
     oled.show()
 
 
-display_weather_forecast()
+def display_weather_forecast_hour(day: int = 1, hour: int = 1):
+    date = localtime()
+    following_hour = 24 + hour
+    if following_hour >= 24:
+        following_hour = 0
+        day += 1
+    forecast = weather.get_forecast_weather_from_api(days=day, hour=following_hour)
+    forecast = forecast[day - 1]["hour"][0]
+    oled.fill(0)
+    oled.text(f"{forecast['time']}", 30, 0)
+    oled.text(f"Temp {forecast['temp_c']} C", 0, 13)
+    oled.text(f"Rain {forecast['chance_of_rain']}%", 0, 13)
+    oled.text(f"Pluie : {forecast['cloud']}%", 0, 26)
+    oled.show()
+
+
+display_weather_forecast_hour(1, 12)
