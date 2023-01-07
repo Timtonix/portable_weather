@@ -31,6 +31,8 @@ def get_date():
     date = localtime()
     if date[4] < 10:
         minute = f"0{date[4]}" # 12h1 -> 12h01
+    else:
+        minute = date[4]
     str_date = f"{date[2]}/{date[1]}/{date[0]} {date[3]}h{minute}"
     print(str_date)
     return str_date
@@ -42,11 +44,12 @@ def get_month(month_number):
 
 
 def welcome_message():
+    current_weather = weather.get_current_weather_from_api()
     oled.fill(0)
     oled.text("Portable Weather", 0, 0)
     oled.text("Viewer", 34, 10)
     oled.text(get_date(), 3, 25)
-    oled.text(f"Lille : {weather.current_weather_option('temp_c')}C", 0, 50)
+    oled.text(f"Lille : {current_weather['temp_c']}C", 0, 50)
     oled.show()
 
 
@@ -85,5 +88,6 @@ def display_weather_forecast_hour(day: int = 1, hour: int = 1):
 welcome_message()
 
 while True:
-    if green == 0:
+    if green.value() == 0:
         display_weather_forecast_day()
+
