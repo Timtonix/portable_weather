@@ -23,3 +23,8 @@ class Weatherapi:
         current_weather = self.get_current_weather_from_api()
         current_condition = current_weather["current"]["condition"]["text"]
         return current_condition
+
+    def current_humidity(self) -> int:
+        current_weather = self.get_current_weather_from_api()
+        current_humidity = current_weather["current"]["humidity"]
+        return current_humidity
