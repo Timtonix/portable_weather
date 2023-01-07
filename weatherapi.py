@@ -2,16 +2,17 @@ import urequests
 
 
 class Weatherapi:
-    def __init__(self, key: str):
+    def __init__(self, key: str, city: str):
+        self.city = city
         self.key = key
 
     def get_current_weather_from_api(self, aqi: str = "no") -> dict:
         response = urequests.get(
-            url=f"https://api.weatherapi.com/v1/current.json?key={self.key}&q=Lille&aqi={aqi}").json
+            url=f"https://api.weatherapi.com/v1/current.json?key={self.key}&q={self.city}&aqi={aqi}").json
         return response["current"]
 
     def get_forecast_weather_from_api(self, aqi: str = "no", days: int = 1, hour: int = None) -> dict:
-        response = urequests.get(url=f"https://api.weatherapi.com/v1/forecast.json?key={self.key}&q=Lille"
+        response = urequests.get(url=f"https://api.weatherapi.com/v1/forecast.json?key={self.key}&q={self.city}"
                                      f"&aqi={aqi}&days={days}&hour={hour}&lang=fr").json()
         return response["forecast"]["forecastday"]
 
