@@ -73,7 +73,7 @@ def display_weather_forecast_hour(day: int = 1, hour: int = 1):
     date = localtime()
     following_hour = date[3] + hour
     if following_hour >= 24:
-        following_hour = 0
+        following_hour = hour
         day += 1
     forecast = weather.get_forecast_weather_from_api(days=day, hour=following_hour)
     forecast = forecast[day - 1]["hour"][0]
@@ -99,7 +99,7 @@ while True:
         sleep(3)
     elif yellow.value() == 0:
         hour += 1
-        display_weather_forecast_hour(hour)
+        display_weather_forecast_hour(hour=hour)
         sleep(3)
     elif red.value() == 0:
         welcome_message()
