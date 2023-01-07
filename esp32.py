@@ -69,10 +69,10 @@ def display_weather_forecast_hour(day: int = 1, hour: int = 1):
     forecast = weather.get_forecast_weather_from_api(days=day, hour=following_hour)
     forecast = forecast[day - 1]["hour"][0]
     oled.fill(0)
-    oled.text(f"{forecast['time']}", 30, 0)
+    oled.text(f"{forecast['time']}", 10, 0)
     oled.text(f"Temp {forecast['temp_c']} C", 0, 13)
-    oled.text(f"Rain {forecast['chance_of_rain']}%", 0, 13)
-    oled.text(f"Pluie : {forecast['cloud']}%", 0, 26)
+    oled.text(f"Rain {forecast['chance_of_rain']}%", 0, 26)
+    oled.text(f"Pluie : {forecast['cloud']}%", 0, 39)
     oled.show()
 
 
