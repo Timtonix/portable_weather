@@ -15,26 +15,27 @@ class Weatherapi:
                                      f"&aqi={aqi}&days={days}&hour={hour}&lang=fr").json()
         return response["forecast"]["forecastday"]
 
-    def current_temp(self) -> int:
+    def current_weather_option(self, param: str) -> int:
+        """
+
+        :param param: the value you want to get -> "temp_c", "humidity".... https://www.weatherapi.com/docs/#apis-realtime
+        :return:
+        """
         current_weather = self.get_current_weather_from_api()
-        current_temp = current_weather["temp_c"]
-        return current_temp
+        current_param = current_weather[param]
+        return current_param
 
     def current_condition(self) -> str:
         current_weather = self.get_current_weather_from_api()
         current_condition = current_weather["condition"]["text"]
         return current_condition
 
-    def current_humidity(self) -> int:
-        current_weather = self.get_current_weather_from_api()
-        current_humidity = current_weather["humidity"]
-        return current_humidity
 
     def forecast_for_a_day_option(self, arg: str, day: int = 1) -> dict:
         """forecast_day_option return the forecast for the given day
 
-        :param arg:
-        :param day:
+        :param arg: https://www.weatherapi.com/docs/#apis-realtime
+        :param day: day you want the forecast each 14
         :return: an integer according to the option you give : "mintemp_c" -> 7.4
 
         Example:
@@ -64,6 +65,14 @@ class Weatherapi:
         List of argument -> https://www.weatherapi.com/docs/#apis-realtime
         """
         forecast_weather = self.get_forecast_weather_from_api(days=day, hour=hour)
-        return forecast_weather[day -1]["hour"][hour - 1][arg]
+        return forecast_weather[day - 1]["hour"][hour - 1][arg]
 
+    def forecast_for_a_day_condition(self, day: int) -> str:
+        """
+
+        :param day:
+        :return:
+        """
+        forecast_weather = self.get_forecast_weather_from_api(days=day)
+        return forecast_weather[day - 1]["day"]["condition"]["text"]
 
