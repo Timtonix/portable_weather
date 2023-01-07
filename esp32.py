@@ -31,6 +31,8 @@ def get_date():
     date = localtime()
     if date[4] < 10:
         minute = f"0{date[4]}" # 12h1 -> 12h01
+    else:
+        minute = date[4]
     str_date = f"{date[2]}/{date[1]}/{date[0]} {date[3]}h{minute}"
     print(str_date)
     return str_date
@@ -42,21 +44,26 @@ def get_month(month_number):
 
 
 def welcome_message():
+    current_weather = weather.get_current_weather_from_api()
     oled.fill(0)
     oled.text("Portable Weather", 0, 0)
     oled.text("Viewer", 34, 10)
     oled.text(get_date(), 3, 25)
-    oled.text(f"Lille : {weather.current_weather_option('temp_c')}C", 0, 50)
+    oled.text(f"Lille : {current_weather['temp_c']}C", 0, 50)
     oled.show()
 
 
 def display_weather_forecast_day(day: int = 1):
     date = localtime()
     forecast = weather.get_forecast_weather_from_api()
+    forecast_day = forecast[day - 1]["day"]
+    forecast_astro = forecast[day - 1]["astro"]
     oled.fill(0)
     oled.text(f"{date[2]} {get_month(date[1])}", 30, 0)
-    oled.text(f"Min {forecast[day - 1]['day']['mintemp_c']} Max {forecast[day - 1]['day']['maxtemp_c']}", 0, 13)
-    oled.text(f"Pluie : {forecast[day - 1]['day']['daily_chance_of_rain']}%", 0, 26)
+    oled.text(f"Min {forecast_day['mintemp_c']} Max {forecast_day['maxtemp_c']}", 0, 13)
+    oled.text(f"Pluie : {forecast_day['daily_chance_of_rain']}%", 0, 26)
+    oled.text(f"Sunrise {forecast_astro['sunrise']}", 0, 39)
+    oled.text(f"Sunset {forecast_astro['sunset']}", 0, 52)
     oled.show()
 
 
@@ -78,5 +85,9 @@ def display_weather_forecast_hour(day: int = 1, hour: int = 1):
     oled.show()
 
 
-display_weather_forecast_hour()
+welcome_message()
+
+while True:
+    if green.value() == 0:
+        display_weather_forecast_day()
 

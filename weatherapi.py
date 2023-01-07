@@ -7,7 +7,7 @@ class Weatherapi:
         self.key = key
 
     def get_current_weather_from_api(self, aqi: str = "no") -> dict:
-        response = urequests.get(url=f"https://api.weatherapi.com/v1/current.json?key={self.key}&q={self.city}&aqi={aqi}").json
+        response = urequests.get(url=f"https://api.weatherapi.com/v1/current.json?key={self.key}&q={self.city}&aqi={aqi}").json()
         return response["current"]
 
     def get_forecast_weather_from_api(self, aqi: str = "no", days: int = 1, hour: int = None) -> dict:
