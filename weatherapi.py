@@ -14,8 +14,12 @@ class Weatherapi:
                                      f"&aqi={aqi}&days={days}&hour={hour}&lang=fr")
         return response.json()
 
-
-    def current_temp(self):
+    def current_temp(self) -> int:
         current_weather = self.get_current_weather_from_api()
         current_temp = current_weather["current"]["temp_c"]
         return current_temp
+
+    def current_condition(self) -> str:
+        current_weather = self.get_current_weather_from_api()
+        current_condition = current_weather["current"]["condition"]["text"]
+        return current_condition
