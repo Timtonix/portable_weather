@@ -21,7 +21,9 @@ oled = ssd1306.SSD1306_I2C(128, 64 ,i2c)
 
 # On initialise les boutons
 green = Pin(23, Pin.IN, Pin.PULL_UP)
-print(green.value())
+yellow = Pin(18, Pin.IN, Pin.PULL_UP)
+red = Pin(16, Pin.IN, Pin.PULL_UP)
+
 
 # Create the weather Object
 weather = Weatherapi(key, "Lille")
@@ -55,11 +57,11 @@ def welcome_message():
 
 def display_weather_forecast_day(day: int = 1):
     date = localtime()
-    forecast = weather.get_forecast_weather_from_api()
+    forecast = weather.get_forecast_weather_from_api(days=day)
     forecast_day = forecast[day - 1]["day"]
     forecast_astro = forecast[day - 1]["astro"]
     oled.fill(0)
-    oled.text(f"{date[2]} {get_month(date[1])}", 30, 0)
+    oled.text(f"{date[2] + day - 1} {get_month(date[1])}", 30, 0)
     oled.text(f"Min {forecast_day['mintemp_c']} Max {forecast_day['maxtemp_c']}", 0, 13)
     oled.text(f"Pluie : {forecast_day['daily_chance_of_rain']}%", 0, 26)
     oled.text(f"Sunrise {forecast_astro['sunrise']}", 0, 39)
@@ -86,8 +88,23 @@ def display_weather_forecast_hour(day: int = 1, hour: int = 1):
 
 
 welcome_message()
+hour = 0
+day = 0
 
 while True:
     if green.value() == 0:
-        display_weather_forecast_day()
+        day += 1
+        print(f"day {day}")
+        display_weather_forecast_day(day)
+        sleep(3)
+    elif yellow.value() == 0:
+        hour += 1
+        display_weather_forecast_hour(hour)
+        sleep(3)
+    elif red.value() == 0:
+        welcome_message()
+        day = 0
+        hour = 0
+
+
 
